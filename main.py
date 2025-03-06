@@ -4,6 +4,9 @@ from langchain.chains.combine_documents import create_stuff_documents_chain
 from langchain_groq import ChatGroq
 from dotenv import load_dotenv
 import os
+from browser_use import Agent
+import asyncio
+
 
 # Load environment variables
 load_dotenv()
@@ -18,7 +21,17 @@ llm = ChatGroq(groq_api_key=GROQ_API_KEY, model_name="llama-3.1-8b-instant")  # 
 prompt = ChatPromptTemplate.from_template("Hello, how are you?")
 
 # Generate response
-response = llm.invoke(prompt.format())
+# response = llm.invoke(prompt.format())
 
 # Print response
-print(response.content)
+# print(response.content)
+
+async def main():
+    agent = Agent(
+        task="Compare the price of gpt-4o and DeepSeek-V3",
+        llm=llm,
+    )
+    result = await agent.run()
+    print(result)
+
+asyncio.run(main())
